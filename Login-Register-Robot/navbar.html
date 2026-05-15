@@ -1,0 +1,211 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap');
+
+:root {
+    --bg: #1e1e1e;
+    --accent: #60a5fa;
+    --accent-dark: #3b82f6;
+    --mascot: #93c5fd;
+    --mascot-border: rgb(96,165,250);
+    --limb: #bfdbfe;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --input-bg: #f8fafc;
+}
+
+.navbar {
+    position: relative;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 64px;
+    height: 80px;
+    background: #000000;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    animation: navIn 0.5s ease both;
+    font-family: 'Prompt', sans-serif;
+}
+
+@keyframes navIn {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.navbar-brand img {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    transition: opacity 0.2s;
+}
+
+.navbar-brand:hover img { opacity: 0.8; }
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-links li a {
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0.3px;
+    padding: 10px 22px;
+    border-radius: 8px;
+    transition: color 0.2s ease;
+    position: relative;
+    font-family: 'Prompt', sans-serif;
+}
+
+.navbar-links li a::after {
+    content: '';
+    position: absolute;
+    bottom: 2px; left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 16px; height: 1.5px;
+    background: var(--mascot);
+    border-radius: 4px;
+    transition: transform 0.25s ease, opacity 0.25s;
+    opacity: 0;
+}
+
+.navbar-links li a:hover { color: rgba(255,255,255,0.9); }
+.navbar-links li a:hover::after { transform: translateX(-50%) scaleX(1); opacity: 0.7; }
+
+.navbar-links li a.active { color: white; font-weight: 400; }
+.navbar-links li a.active::after {
+    transform: translateX(-50%) scaleX(1);
+    opacity: 1;
+    box-shadow: 0 0 5px rgba(255,255,255,0.3);
+}
+
+.navbar-cta {
+    margin-left: 10px;
+    background: transparent !important;
+    color: rgba(255,255,255,0.7) !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    border-radius: 8px !important;
+    padding: 10px 26px !important;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    letter-spacing: 0.3px;
+    transition: color 0.2s, border-color 0.2s, background 0.2s !important;
+    font-family: 'Prompt', sans-serif;
+}
+
+.navbar-cta::after { display: none !important; }
+
+.navbar-cta:hover {
+    color: white !important;
+    border-color: rgba(255,255,255,0.35) !important;
+    background: rgba(255,255,255,0.06) !important;
+}
+
+.mobile-cta {
+    display: none;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 400;
+    font-family: 'Prompt', sans-serif;
+    letter-spacing: 0.3px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: transparent;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+    white-space: nowrap;
+}
+.mobile-cta:hover {
+    color: white;
+    border-color: rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.06);
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+}
+.hamburger span {
+    display: block;
+    width: 20px; height: 1.5px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 600px) {
+    .navbar { padding: 0 20px; gap: 12px; }
+
+    .navbar-links {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+    }
+    .navbar-links.open {
+        display: flex;
+        position: absolute;
+        top: 80px; left: 0; right: 0;
+        background: #000000;
+        padding: 8px 16px 16px;
+        border-bottom: 1px solid rgba(255,255,255,0.07);
+        z-index: 99;
+    }
+    .navbar-links li.cta-item { display: none; }
+
+    .navbar-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-left: auto;
+    }
+    .mobile-cta { display: flex !important; }
+    .hamburger  { display: flex; }
+}
+
+@media (min-width: 601px) {
+    .mobile-cta   { display: none !important; }
+    .navbar-right { display: contents; }
+}
+</style>
+
+<nav class="navbar">
+    <a href="#" class="navbar-brand">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCdvlt_TxlYQcS6NAuUII9T8McHsWFr_1EgA&s" alt="Logo">
+    </a>
+
+    <ul class="navbar-links" id="navLinks">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="product.html">Product</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li class="cta-item"><a href="login.html" class="navbar-cta">เข้าสู่ระบบ</a></li>
+    </ul>
+
+    <div class="navbar-right">
+        <a href="login.html" class="mobile-cta">เข้าสู่ระบบ</a>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</nav>

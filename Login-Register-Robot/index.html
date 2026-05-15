@@ -3,46 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Mascot Login</title>
+    <title>Login – Interactive Mascot</title>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap');
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        :root {
-            --bg: #0d1b2a;
-            --accent: #3b82f6;
-            --accent-dark: #2563eb;
-            --text-dark: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --input-bg: #f8fafc;
-            --mascot: #16f0e5;
-            --mascot-border: rgb(18,201,201);
-            --limb: #85c3e7;
-        }
-
         body {
             background: var(--bg);
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
             font-family: 'Prompt', sans-serif;
             position: relative;
         }
 
+        /* Subtle background effects */
         body::before {
             content: '';
             position: fixed; inset: 0;
             background:
-                radial-gradient(ellipse 80% 60% at 20% 80%, rgba(59,130,246,0.08) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 50% at 80% 20%, rgba(22,240,229,0.06) 0%, transparent 55%);
+                radial-gradient(ellipse 70% 55% at 15% 85%, rgba(255,255,255,0.03) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 85% 15%, rgba(255,255,255,0.02) 0%, transparent 55%);
             pointer-events: none;
         }
 
         body::after {
             content: '';
             position: fixed; inset: 0;
-            background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+            background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
             background-size: 36px 36px;
             pointer-events: none;
             mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
@@ -53,8 +45,8 @@
             filter: blur(60px); pointer-events: none; opacity: 0.35;
             animation: drift 8s ease-in-out infinite alternate;
         }
-        .orb-1 { width:300px; height:300px; background:rgba(59,130,246,0.25); top:-80px; left:-80px; }
-        .orb-2 { width:250px; height:250px; background:rgba(22,240,229,0.15); bottom:-60px; right:-60px; animation-delay:-4s; }
+        .orb-1 { width:400px; height:400px; background:rgba(255,255,255,0.025); top:-120px; left:-120px; }
+        .orb-2 { width:300px; height:300px; background:rgba(255,255,255,0.018); bottom:-80px; right:-80px; animation-delay:-4s; }
 
         @keyframes drift {
             from { transform: translate(0,0); }
@@ -66,12 +58,22 @@
             to   { opacity:1; transform:translateY(0) scale(1); }
         }
 
+        /* ── Page body ── */
+        .page-body {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 80px);
+            padding: 48px 16px;
+        }
+
         /* ── Wrapper ── */
         .wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
-            animation: cardIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+            animation: cardIn 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.15s both;
             position: relative;
         }
 
@@ -90,7 +92,7 @@
             border: 5px solid var(--mascot-border);
             display: flex; justify-content: center; align-items: center;
             overflow: hidden;
-            box-shadow: 0 8px 24px rgba(22,240,229,0.25), 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 24px rgba(96,165,250,0.25), 0 4px 10px rgba(0,0,0,0.3);
         }
 
         .eyes {
@@ -99,7 +101,7 @@
         }
 
         .eye {
-            background: #0d1b2a;
+            background: #1e1e1e;
             width: 13px; height: 13px; border-radius: 50%;
             box-shadow: 0 0 0 2px rgba(255,255,255,0.15);
         }
@@ -124,11 +126,11 @@
         .mascot.cover-eyes .arm.left  { transform:translateY(-90px) rotate(35deg)  translateX(15px); }
         .mascot.cover-eyes .arm.right { transform:translateY(-90px) rotate(-35deg) translateX(-15px); }
 
-        /* ── Card ── */
+        /* ── Login Card ── */
         .login-card {
             background: white;
-            width: 360px;
-            padding: 32px 32px 28px;
+            width: 440px;
+            padding: 42px 42px 36px;
             border-radius: 28px;
             box-shadow:
                 0 2px 0 rgba(255,255,255,0.05) inset,
@@ -149,35 +151,25 @@
         h2 {
             text-align: center;
             color: var(--text-dark);
-            font-size: 22px; font-weight: 600;
+            font-size: 26px; font-weight: 600;
             letter-spacing: -0.3px;
-            margin-bottom: 28px;
-            padding-top: 35px;
+            margin-bottom: 32px;
+            padding-top: 40px;
         }
 
-        h2::after {
-            content: '';
-            display: block;
-            width: 36px; height: 3px;
-            background: var(--accent);
-            border-radius: 4px;
-            margin: 8px auto 0;
-            opacity: 0.7;
-        }
-
-        .input-group { margin-bottom: 18px; }
+        .input-group { margin-bottom: 22px; }
 
         label {
             display: flex; align-items: center; gap: 6px;
-            font-size: 13px; color: var(--text-muted);
-            margin-bottom: 8px; font-weight: 400;
+            font-size: 14px; color: var(--text-muted);
+            margin-bottom: 9px; font-weight: 400;
         }
 
         input {
-            width: 100%; padding: 13px 16px;
+            width: 100%; padding: 15px 18px;
             border: 1.5px solid var(--border);
             border-radius: 14px;
-            font-size: 14px; font-family: 'Prompt', sans-serif;
+            font-size: 15px; font-family: 'Prompt', sans-serif;
             outline: none;
             transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
             background: var(--input-bg); color: var(--text-dark);
@@ -186,16 +178,16 @@
         input::placeholder { color: #b0bec5; font-size: 13px; }
 
         input:focus {
-            border-color: var(--accent);
+            border-color: #9ca3af;
             background: white;
-            box-shadow: 0 0 0 4px rgba(59,130,246,0.1);
+            box-shadow: 0 0 0 4px rgba(0,0,0,0.06);
         }
 
         .btn-login {
-            width: 100%; padding: 15px;
+            width: 100%; padding: 17px;
             background: var(--accent); color: white;
             border: none; border-radius: 14px;
-            font-size: 15px; font-weight: 600;
+            font-size: 16px; font-weight: 600;
             font-family: 'Prompt', sans-serif;
             cursor: pointer;
             transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
@@ -263,6 +255,11 @@
 
         .leg-unit.left  .foot { transform: translateX(-5px); }
         .leg-unit.right .foot { transform: translateX(5px);  }
+
+        /* Mobile card */
+        @media (max-width: 600px) {
+            .login-card { width: 360px; }
+        }
     </style>
 </head>
 <body>
@@ -270,57 +267,125 @@
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
 
-    <div class="wrapper">
+    <!-- ② Navbar injected here by JS -->
+    <div id="navbar-placeholder"></div>
 
-        <div class="mascot" id="mascot">
-            <div class="head">
-                <div class="eyes" id="eyes">
-                    <div class="eye"></div>
-                    <div class="eye"></div>
+    <!-- Login section -->
+    <div class="page-body">
+        <div class="wrapper">
+
+            <div class="mascot" id="mascot">
+                <div class="head">
+                    <div class="eyes" id="eyes">
+                        <div class="eye"></div>
+                        <div class="eye"></div>
+                    </div>
+                </div>
+                <div class="arms">
+                    <div class="arm left"></div>
+                    <div class="arm right"></div>
                 </div>
             </div>
-            <div class="arms">
-                <div class="arm left"></div>
-                <div class="arm right"></div>
+
+            <form action="" class="login-card">
+                <h2>เข้าสู่ระบบ</h2>
+
+                <div class="input-group">
+                    <label for="username">ชื่อผู้ใช้</label>
+                    <input type="text" id="username" name="username"
+                           placeholder="กรอกชื่อผู้ใช้ของคุณ..." autocomplete="off">
+                </div>
+
+                <div class="input-group">
+                    <label for="password">รหัสผ่าน</label>
+                    <input type="password" id="password" name="password"
+                           placeholder="ความลับของคุณปลอดภัย!">
+                </div>
+
+                <button type="submit" class="btn-login">ล็อกอิน</button>
+
+                <p class="footer-hint">ยังไม่มีบัญชี? <a href="Register-Robot.html">สมัครสมาชิก</a></p>
+            </form>
+
+            <div class="legs">
+                <div class="leg-unit left">
+                    <div class="leg"></div>
+                    <div class="foot"></div>
+                </div>
+                <div class="leg-unit right">
+                    <div class="leg"></div>
+                    <div class="foot"></div>
+                </div>
             </div>
+
         </div>
-
-        <form action="" class="login-card">
-            <h2>เข้าสู่ระบบ</h2>
-
-            <div class="input-group">
-                <label for="username">ชื่อผู้ใช้</label>
-                <input type="text" id="username" name="username"
-                       placeholder="กรอกชื่อผู้ใช้ของคุณ..." autocomplete="off">
-            </div>
-
-            <div class="input-group">
-                <label for="password">รหัสผ่าน</label>
-                <input type="password" id="password" name="password"
-                       placeholder="ความลับของคุณปลอดภัย!">
-            </div>
-
-            <button type="submit" class="btn-login">ล็อกอิน</button>
-
-            <p class="footer-hint">ยังไม่มีบัญชี? <a href="Register-Robot.html">สมัครสมาชิก</a></p>
-        </form>
-
-        <div class="legs">
-            <div class="leg-unit left">
-                <div class="leg"></div>
-                <div class="foot"></div>
-            </div>
-            <div class="leg-unit right">
-                <div class="leg"></div>
-                <div class="foot"></div>
-            </div>
-        </div>
-
     </div>
 
+    <!-- Footer injected here -->
+    <div id="footer-placeholder"></div>
+
     <script>
-        const mascot = document.getElementById('mascot');
-        const eyes   = document.getElementById('eyes');
+        /* ③ Load navbar component then init its interactions */
+        fetch('navbar.html')
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('navbar-placeholder').innerHTML = html;
+                initNavbar();
+            })
+            .catch(() => {
+                // Fallback: navbar.html not found (e.g. opened as a local file)
+                // Render a minimal inline navbar so the page doesn't break
+                document.getElementById('navbar-placeholder').innerHTML = `
+                    <nav class="navbar">
+                        <a href="#" class="navbar-brand">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCdvlt_TxlYQcS6NAuUII9T8McHsWFr_1EgA&s" alt="Logo">
+                        </a>
+                        <ul class="navbar-links" id="navLinks">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About</a></li>
+                            <li><a href="product.html">Product</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                            <li class="cta-item"><a href="login.html" class="navbar-cta active">เข้าสู่ระบบ</a></li>
+                        </ul>
+                        <div class="navbar-right">
+                            <a href="login.html" class="mobile-cta">เข้าสู่ระบบ</a>
+                            <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+                                <span></span><span></span><span></span>
+                            </div>
+                        </div>
+                    </nav>`;
+                initNavbar();
+            });
+
+        function initNavbar() {
+            // Active link highlighting
+            document.querySelectorAll('.navbar-links a:not(.navbar-cta)').forEach(link => {
+                link.addEventListener('click', function() {
+                    document.querySelectorAll('.navbar-links a').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Mark login link as active on this page
+            const loginLinks = document.querySelectorAll('.navbar-links a[href="login.html"], .navbar-cta');
+            loginLinks.forEach(l => l.classList.add('active'));
+        }
+
+        // Hamburger toggle (called from inline onclick in navbar.html)
+        function toggleMenu() {
+            const nav = document.getElementById('navLinks');
+            if (nav) nav.classList.toggle('open');
+        }
+
+        /* ── Load footer ── */
+        fetch('footer.html')
+            .then(res => res.text())
+            .then(html => { document.getElementById('footer-placeholder').innerHTML = html; })
+            .catch(() => {});
+
+        /* ── Mascot interactions ── */
+        const mascot       = document.getElementById('mascot');
+        const eyes         = document.getElementById('eyes');
         const usernameInput = document.getElementById('username');
         const passwordInput = document.getElementById('password');
 
